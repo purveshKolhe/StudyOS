@@ -1,0 +1,468 @@
+{
+    "job_id": "ab82f444-6719-4134-a4b2-84d65836126e",
+    "layouts": [{
+            "layout_description": "Introducing slide of lesson. MUST HAVE.",
+            "layout_id": 0,
+            "layout_name": "Blank",
+            "placeholders": [{
+                    "content_description": "Title of the lesson. ALL-CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 40,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Brief description about the lesson. Title Case ONLY.",
+                    "id": 11,
+                    "maxchars": 25,
+                    "minchars": 5,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "General purpose page properly introducing the chapter. OPTIONAL TO HAVE.",
+            "layout_id": 1,
+            "layout_name": "Custom Layout",
+            "placeholders": [{
+                    "content_description": "Heading of the page. ALL CAPS ONLY. ",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Content under the heading. Sentence case ONLY.",
+                    "id": 11,
+                    "maxchars": 350,
+                    "minchars": 200,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "To present information through a text-heavy approach.",
+            "layout_id": 2,
+            "layout_name": "1_Custom Layout",
+            "placeholders": [{
+                    "content_description": "This placeholder contains the main body text that provides supporting information or explanations for the infographic's topic, which could be paragraph text or bullet points.",
+                    "id": 10,
+                    "maxchars": 1000,
+                    "minchars": 100,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "This placeholder acts as an introduction or summary. It should provide context or an overview of the infographic's main theme or focus point.",
+                    "id": 11,
+                    "maxchars": 500,
+                    "minchars": 50,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Index/Contents/Agenda of the lesson. 4 items and 4 corresponding descriptions. MUST HAVE.",
+            "layout_id": 3,
+            "layout_name": "2_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Short heading of 1st content. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 25,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading of 3rd content. ALL CAPS ONLY.",
+                    "id": 11,
+                    "maxchars": 25,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading of 2nd content. ALL CAPS ONLY.",
+                    "id": 12,
+                    "maxchars": 25,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading of 4th content. ALL CAPS ONLY..",
+                    "id": 13,
+                    "maxchars": 25,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Detailed description corresponding to 1st short heading. Sentence case only.",
+                    "id": 14,
+                    "maxchars": 250,
+                    "minchars": 150,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Detailed description corresponding to 2nd short heading. Sentence case only.",
+                    "id": 15,
+                    "maxchars": 250,
+                    "minchars": 150,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Detailed description corresponding to 3rd short heading. Sentence case only.",
+                    "id": 16,
+                    "maxchars": 250,
+                    "minchars": 150,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Detailed description corresponding to 4th short heading. Sentence case only.",
+                    "id": 17,
+                    "maxchars": 250,
+                    "minchars": 150,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Page with explanation of two points. OPTIONAL to have.",
+            "layout_id": 4,
+            "layout_name": "3_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Numeric value of the first point of slide being explained. NUMERIC VALUE ONLY.",
+                    "id": 11,
+                    "maxchars": 2,
+                    "minchars": 1,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Numeric value of the second point of slide being explained. NUMERIC VALUE ONLY.",
+                    "id": 12,
+                    "maxchars": 2,
+                    "minchars": 1,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading corresponding to the first point of the slide being explained. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading corresponding to the second point of the slide being explained. ALL CAPS ONLY.",
+                    "id": 13,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the first short heading of the slide. Sentence case ONLY.",
+                    "id": 14,
+                    "maxchars": 315,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the second short heading of the slide. Sentence case ONLY.",
+                    "id": 15,
+                    "maxchars": 315,
+                    "minchars": 250,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Second kind of Page with explanation of two points. OPTIONAL to have.",
+            "layout_id": 5,
+            "layout_name": "4_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Numeric value of the second point of slide being explained. NUMERIC VALUE ONLY.",
+                    "id": 11,
+                    "maxchars": 2,
+                    "minchars": 1,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Numeric value of the first point of slide being explained. NUMERIC VALUE ONLY.",
+                    "id": 12,
+                    "maxchars": 2,
+                    "minchars": 1,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading corresponding to the second point of the slide being explained. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading corresponding to the first point of the slide being explained. ALL CAPS ONLY.",
+                    "id": 13,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the second short heading of the slide. Sentence case ONLY.",
+                    "id": 14,
+                    "maxchars": 310,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the first short heading of the slide. Sentence case ONLY.",
+                    "id": 15,
+                    "maxchars": 310,
+                    "minchars": 250,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Second kind of General purpose page properly introducing the chapter. OPTIONAL TO HAVE.",
+            "layout_id": 6,
+            "layout_name": "6_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Heading of the page. ALL CAPS ONLY. ",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Content under the heading. Sentence case ONLY.",
+                    "id": 11,
+                    "maxchars": 350,
+                    "minchars": 200,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Explanation of three points. 1 Heading. 3 subheadings along with corresponding description. OPTIONAL TO HAVE.",
+            "layout_id": 7,
+            "layout_name": "7_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Description corresponding to the first subheading of the page. Sentence case ONLY.",
+                    "id": 14,
+                    "maxchars": 360,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the second subheading of the page. Sentence case ONLY.",
+                    "id": 15,
+                    "maxchars": 360,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the third subheading of the page. Sentence case ONLY.",
+                    "id": 16,
+                    "maxchars": 360,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Main Heading of the slide. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the first point of the page. ALL CAPS ONLY.",
+                    "id": 17,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the second point of the page. ALL CAPS ONLY.",
+                    "id": 18,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the third point of the page. ALL CAPS ONLY.",
+                    "id": 19,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Second kind of Explanation of three points. 1 Heading. 3 subheadings along with corresponding description. OPTIONAL TO HAVE.",
+            "layout_id": 8,
+            "layout_name": "8_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Main Heading of the slide. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 15,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the first point of the page. ALL CAPS ONLY.",
+                    "id": 11,
+                    "maxchars": 20,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the second point of the page. ALL CAPS ONLY.",
+                    "id": 12,
+                    "maxchars": 20,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Subtitle to introduce the third point of the page. ALL CAPS ONLY.",
+                    "id": 13,
+                    "maxchars": 20,
+                    "minchars": 3,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the first subheading of the page. Sentence case ONLY.",
+                    "id": 14,
+                    "maxchars": 300,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the second subheading of the page. Sentence case ONLY.",
+                    "id": 15,
+                    "maxchars": 300,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the third subheading of the page. Sentence case ONLY.",
+                    "id": 16,
+                    "maxchars": 300,
+                    "minchars": 250,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Second kind of Page with explanation of two points. OPTIONAL to have.",
+            "layout_id": 9,
+            "layout_name": "12_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Main heading of the page. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading for the first point. ALL CAPS ONLY.",
+                    "id": 11,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Short heading for the second point. ALL CAPS ONLY.",
+                    "id": 12,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the first subheading of the page. Sentence case ONLY.",
+                    "id": 14,
+                    "maxchars": 350,
+                    "minchars": 250,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Description corresponding to the second subheading of the page. Sentence case ONLY.",
+                    "id": 15,
+                    "maxchars": 350,
+                    "minchars": 250,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "Summary page with 1 heading and 1 description placeholders. MUST HAVE.",
+            "layout_id": 10,
+            "layout_name": "14_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Synonym of the word 'summary' or the word itself. ALL CAPS ONLY.",
+                    "id": 10,
+                    "maxchars": 20,
+                    "minchars": 5,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "This is the main content area for detailed summary. Sentence case ONLY.",
+                    "id": 11,
+                    "maxchars": 700,
+                    "minchars": 500,
+                    "type": "BODY"
+                }
+            ]
+        },
+        {
+            "layout_description": "IGNORE THIS COMPLETELY. DO NOT CREATE CONTENT FOR THIS OR USE THIS LAYOUT.",
+            "layout_id": 11,
+            "layout_name": "16_Custom Layout",
+            "placeholders": [{
+                    "content_description": "Main headline for the infographic. Clearly and concisely state the infographic's topic or key message.",
+                    "id": 1,
+                    "maxchars": 50,
+                    "minchars": 12,
+                    "type": "TITLE"
+                },
+                {
+                    "content_description": "Introductory text that provides context or background information related to the infographic's topic.",
+                    "id": 2,
+                    "maxchars": 200,
+                    "minchars": 50,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Primary data visualization, should represent the core insight or findings of the infographic.",
+                    "id": 3,
+                    "maxchars": 0,
+                    "minchars": 0,
+                    "type": "CHART"
+                },
+                {
+                    "content_description": "Brief description of the chart's content, explaining key trends or takeaways.",
+                    "id": 4,
+                    "maxchars": 120,
+                    "minchars": 20,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "A visual element that reinforces the data or provides context for the topic.",
+                    "id": 5,
+                    "maxchars": 0,
+                    "minchars": 0,
+                    "type": "PICTURE"
+                },
+                {
+                    "content_description": "Supplementary information about the image, elaborating on its connection to the topic.",
+                    "id": 6,
+                    "maxchars": 150,
+                    "minchars": 30,
+                    "type": "BODY"
+                },
+                {
+                    "content_description": "Credits for the data and imagery used in the infographic; necessary for establishing credibility.",
+                    "id": 7,
+                    "maxchars": 200,
+                    "minchars": 30,
+                    "type": "BODY"
+                }
+            ]
+        }
+    ]
+}
