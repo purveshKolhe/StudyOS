@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StudyOS · AI Slide Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div class="bg-gradient"></div>
+
+    <main class="container">
+      <header class="brand">
+        <div class="logo">📚</div>
+        <div class="titles">
+          <h1>StudyOS</h1>
+          <p>Generate beautiful, structured presentations from any topic.</p>
+        </div>
+      </header>
+
+      <section class="card">
+        <form id="generate-form">
+          <label for="topic" class="label">Enter your topic</label>
+          <div class="input-row">
+            <input id="topic" name="topic" type="text" placeholder="e.g. Photosynthesis, Pythagorean Theorem, World War II..." required />
+            <button id="generate-btn" type="submit">Generate</button>
+          </div>
+          <p class="hint">We will include required layouts and a final Thank You slide automatically.</p>
+        </form>
+
+        <div id="status" class="status hidden">
+          <div class="spinner"></div>
+          <div class="status-text">
+            <h3>Creating your deck...</h3>
+            <p>This may take a few seconds while we draft content and style your slides.</p>
+          </div>
+        </div>
+
+        <div id="result" class="result hidden">
+          <h3>Your presentation is ready</h3>
+          <p id="filename"></p>
+          <div class="actions">
+            <a id="download-link" class="btn" href="#" download>Download .pptx</a>
+            <button id="again" class="btn secondary">Create another</button>
+          </div>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+      </section>
+
+      <footer class="footer">
+        <p>Built with HTML · CSS · JS · Flask · python-pptx · Gemini</p>
+      </footer>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>
