@@ -7,6 +7,13 @@ import logging
 
 from flask import Flask, render_template, request, jsonify, send_from_directory, abort
 from pptx import Presentation
+import asyncio
+import edge_tts
+from moviepy import ImageClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip
+import tempfile
+from pathlib import Path
+import subprocess
+import pypdfium2 as pdfium
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "template")
@@ -137,9 +144,13 @@ def call_gemini_for_plan(topic: str, metadata: Dict[str, Any]) -> Dict[str, Any]
             "3. 'Can be used MULTIPLE TIMES' layouts: You can use these as many times as needed to fully explain the topic.\\n"
             "4. Mutually exclusive layouts: If a layout says 'Either use this OR layout_id X', choose only one of them.\\n"
             "5. IGNORE layouts: Never use these.\\n"
-            "CRITICAL: There is NO MAXIMUM LIMIT on the number of slides. Create 15, 20, 30, or even more slides if needed to comprehensively cover the topic. "
-            "DO NOT restrict yourself to 7-10 slides. Use repeatable layouts multiple times for different sub-topics, concepts, examples, and explanations. "
-            "The goal is COMPLETE and THOROUGH educational coverage, not brevity. "
+            "SLIDE COUNT: Aim for 15-27 slides (can vary by 1-2 slides if absolutely needed for proper completion). "
+            "Use repeatable layouts multiple times for different sub-topics, concepts, examples, and explanations. "
+            "The goal is COMPLETE and THOROUGH educational coverage. "
+            "SPEECH GENERATION: For EACH slide, you MUST generate a 'speech' field. "
+            "The speech should be a natural, engaging, and explanatory narration script (approx. 30-60 seconds per slide). "
+            "DO NOT just read the text on the slide. Instead, explain the concepts, give examples, and use transitional phrases like 'Moving on to...', 'As we can see here...', 'This is classified into...'. "
+            "Make it sound like a real teacher explaining the topic. "
             "Your entire response must be ONLY the raw JSON, without any other text or markdown formatting."
         )
         
@@ -147,7 +158,8 @@ def call_gemini_for_plan(topic: str, metadata: Dict[str, Any]) -> Dict[str, Any]
             "slides": [
                 {
                     "layout_name": "Blank",
-                    "placeholders": {"10": "TITLE IN ALL CAPS", "11": "Title Case subtitle"}
+                    "placeholders": {"10": "TITLE IN ALL CAPS", "11": "Title Case subtitle"},
+                    "speech": "Welcome to this presentation on [Topic]. Today we will explore..."
                 }
             ]
         }
@@ -155,10 +167,11 @@ def call_gemini_for_plan(topic: str, metadata: Dict[str, Any]) -> Dict[str, Any]
         prompt = (
             f"Generate a comprehensive JSON slide plan for an educational presentation on the topic: '{topic}'.\\n\\n"
             f"CRITICAL INSTRUCTIONS:\\n"
-            f"1. There is NO MAXIMUM slide limit. Create as many slides as needed (15-30+ slides is perfectly fine).\\n"
-            f"2. THOROUGHLY cover ALL important aspects, sub-topics, concepts, examples, and details of '{topic}'.\\n"
+            f"1. Create 15-27 slides (can vary by 1-2 slides if needed for proper completion). This is the target range.\\n"
+            f"2. THOROUGHLY cover all important aspects, sub-topics, concepts, examples, and details of '{topic}'.\\n"
             f"3. Use repeatable layouts MULTIPLE times for different content (e.g., use layout_id 2 for every sub-topic, layout_id 4,5,7,8,9 multiple times for different explanations).\\n"
-            f"4. The presentation should be COMPREHENSIVE and EDUCATIONAL, not brief or minimal.\\n\\n"
+            f"4. The presentation should be COMPREHENSIVE and EDUCATIONAL.\\n"
+            f"5. GENERATE SPEECH: Include a 'speech' field for every slide. This is the narration script. It must be natural, explanatory, and NOT just reading the slide text. Use connecting phrases.\\n\\n"
             f"Layout Usage Rules:\\n"
             f"- Use ALL layouts marked 'MUST HAVE' exactly once\\n"
             f"- For layouts marked 'Use ONLY ONCE', include them at most once\\n"
@@ -166,7 +179,7 @@ def call_gemini_for_plan(topic: str, metadata: Dict[str, Any]) -> Dict[str, Any]
             f"- For mutually exclusive layouts (marked 'Either use this OR layout_id X'), choose only one\\n"
             f"- Never use layouts marked 'IGNORE'\\n\\n"
             f"Layout Metadata:\\n{json.dumps(metadata, ensure_ascii=False)}\\n\\n"
-            f"Remember: More slides = better coverage. Aim for 15+ slides minimum for a comprehensive educational presentation.\\n"
+            f"Target: 15-27 slides with engaging narration scripts.\\n"
             f"Respond with only the raw JSON output, matching this schema: {json.dumps(schema_hint)}\\n"
         )
         
@@ -205,6 +218,11 @@ def call_gemini_for_plan(topic: str, metadata: Dict[str, Any]) -> Dict[str, Any]
         m = re.search(r'\{[\s\S]*\}', text_clean.strip())
         raw = m.group(0) if m else text_clean
         
+        # Sanitize JSON: Replace curly quotes and other problematic characters
+        raw = raw.replace('"', '"').replace('"', '"')  # Curly double quotes to straight
+        raw = raw.replace(''', "'").replace(''', "'")  # Curly single quotes to straight
+        raw = raw.replace('…', '...')  # Ellipsis
+        
         app.logger.info(f"Extracted JSON string for parsing:\n{raw}")
         
         plan = json.loads(raw)
@@ -229,12 +247,20 @@ def build_pptx_from_plan(topic: str, plan: Dict[str, Any]) -> str:
     for i, slide_spec in enumerate(slides_to_build):
         layout_name = slide_spec.get("layout_name")
         placeholders = slide_spec.get("placeholders", {})
+        speech = slide_spec.get("speech", "")
         app.logger.info(f"Building slide {i+1}/{len(slides_to_build)} with layout: '{layout_name}'")
         if not layout_name:
             app.logger.warning(f"Skipping slide {i+1} due to missing layout name.")
             continue
         layout = find_layout(prs, layout_name)
         slide = prs.slides.add_slide(layout)
+        
+        # Save speech to notes
+        if speech:
+            notes_slide = slide.notes_slide
+            text_frame = notes_slide.notes_text_frame
+            text_frame.text = speech
+            
         try:
             fill_placeholders(slide, layout_name, placeholders)
         except Exception as e:
@@ -298,6 +324,97 @@ def download(filename):
     return send_from_directory(OUTPUT_DIR, filename, as_attachment=True, mimetype=(
         "application/vnd.openxmlformats-officedocument.presentationml.presentation"
     ))
+
+
+@app.route('/generate_video', methods=['POST'])
+def generate_video():
+    data = request.json
+    filename = data.get('filename')
+    if not filename:
+        return jsonify({"error": "Filename is required"}), 400
+        
+    pptx_path = os.path.join(OUTPUT_DIR, filename)
+    if not os.path.exists(pptx_path):
+        return jsonify({"error": "File not found"}), 404
+        
+    video_filename = filename.replace(".pptx", ".mp4")
+    video_path = os.path.join(OUTPUT_DIR, video_filename)
+    
+    try:
+        # Run async video generation in a sync wrapper
+        asyncio.run(create_video_from_pptx(pptx_path, video_path))
+        return jsonify({"video_url": f"/download/{video_filename}"})
+    except Exception as e:
+        app.logger.error(f"Video generation failed: {e}", exc_info=True)
+        return jsonify({"error": str(e)}), 500
+
+async def create_video_from_pptx(pptx_path, output_video_path):
+    app.logger.info(f"Starting video generation for {pptx_path}")
+    
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # 1. Convert PPTX to PDF using C# app
+        pdf_path = os.path.join(temp_dir, "slides.pdf")
+        converter_dll = os.path.join(BASE_DIR, "csharp_converter", "bin", "Debug", "net9.0", "csharp_converter.dll")
+        
+        # Check if DLL exists
+        if not os.path.exists(converter_dll):
+            raise FileNotFoundError(f"C# Converter DLL not found at {converter_dll}. Please build the C# project.")
+            
+        cmd = ["dotnet", converter_dll, pptx_path, pdf_path]
+        app.logger.info(f"Running conversion command: {' '.join(cmd)}")
+        subprocess.run(cmd, check=True, capture_output=True)
+        
+        # 2. Convert PDF to Images
+        app.logger.info("Converting PDF to images...")
+        pdf = pdfium.PdfDocument(pdf_path)
+        images = []
+        for i in range(len(pdf)):
+            page = pdf[i]
+            bitmap = page.render(scale=2) # 2x scale for better quality
+            pil_image = bitmap.to_pil()
+            img_path = os.path.join(temp_dir, f"slide_{i}.png")
+            pil_image.save(img_path)
+            images.append(img_path)
+            
+        # 3. Generate Audio and Video Clips
+        app.logger.info("Generating audio and video clips...")
+        prs = Presentation(pptx_path)
+        video_clips = []
+        
+        # Ensure we don't process more slides than we have images for
+        num_slides = min(len(prs.slides), len(images))
+        
+        for i in range(num_slides):
+            slide = prs.slides[i]
+            
+            # Extract notes
+            notes = ""
+            if slide.has_notes_slide and slide.notes_slide.notes_text_frame:
+                notes = slide.notes_slide.notes_text_frame.text
+            
+            if not notes or len(notes.strip()) < 5:
+                notes = f"Slide {i+1}. Please review the content on this slide."
+            
+            # Generate Audio
+            audio_path = os.path.join(temp_dir, f"audio_{i}.mp3")
+            communicate = edge_tts.Communicate(notes, "en-US-AriaNeural")
+            await communicate.save(audio_path)
+            
+            # Create Clips
+            audio_clip = AudioFileClip(audio_path)
+            img_clip = ImageClip(images[i]).set_duration(audio_clip.duration)
+            
+            # Add a slight fade in/out for smoother transitions
+            img_clip = img_clip.fadein(0.5).fadeout(0.5)
+            
+            img_clip = img_clip.set_audio(audio_clip)
+            video_clips.append(img_clip)
+            
+        # 4. Concatenate and Save
+        app.logger.info("Rendering final video...")
+        final_video = concatenate_videoclips(video_clips, method="compose")
+        final_video.write_videofile(output_video_path, fps=24, codec="libx264", audio_codec="aac")
+        app.logger.info(f"Video saved to {output_video_path}")
 
 
 if __name__ == "__main__":

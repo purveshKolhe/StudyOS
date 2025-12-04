@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css" />
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -24,14 +26,16 @@
                 <a class="nav-link" href="#generate-form">Generate</a>
                 <a class="nav-link" href="#">About</a>
             </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="nav-icon-btn">
+                    <i data-lucide="sun"></i>
+                </button>
+            </div>
         </nav>
         <div class="bg-gradient"></div>
 
         <main class="container">
             <header class="brand">
-                <div class="logo-container">
-                    <img class="logo-img" src="/static/assets/logo.png" alt="StudyOS" />
-                </div>
                 <div class="titles">
                     <h1 class="gradient-text">AI Slide Generator</h1>
                     <p>Transform any topic into a stunning presentation in seconds.</p>
@@ -68,9 +72,25 @@
                         <p id="filename" class="filename-display"></p>
                         <div class="actions">
                             <a id="download-link" class="btn" href="#" download>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>                                Download .pptx
+                                <i data-lucide="download" width="20" height="20"></i> Download .pptx
                             </a>
+                            <button id="generate-video-btn" class="btn secondary" style="margin-left: 10px;">
+                                <i data-lucide="video" width="20" height="20"></i>
+                                Generate Video
+                            </button>
                             <button id="again" class="btn secondary">Create Another</button>
+                        </div>
+
+                        <div id="video-result" class="hidden" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                            <div id="video-loading" class="hidden">
+                                <div class="spinner" style="width: 24px; height: 24px; border-width: 2px;"></div>
+                                <p style="font-size: 14px; color: #666; margin-top: 10px;">Rendering video (this may take a minute)...</p>
+                            </div>
+                            <div id="video-success" class="hidden">
+                                <a id="video-download-link" class="btn" href="#" download style="background: #10b981; color: white; border: none;">
+                                    <i data-lucide="film" width="20" height="20"></i> Download Video (.mp4)
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,6 +104,9 @@
         </main>
     </div>
 
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="/static/js/app.js"></script>
 </body>
 
